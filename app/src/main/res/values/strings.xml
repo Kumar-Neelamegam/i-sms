@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">I-SMS</string>
+    <string name="txt_footer">Powered by Ispider Software Solution</string>
+    <string name="remeber_me">Remeber Me</string>
 </resources>

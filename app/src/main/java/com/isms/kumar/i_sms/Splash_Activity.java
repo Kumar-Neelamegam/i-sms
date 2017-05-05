@@ -13,7 +13,6 @@ public class Splash_Activity extends AppCompatActivity {
 
         //Test
 
-        //Vidhu kd
 
 
     }

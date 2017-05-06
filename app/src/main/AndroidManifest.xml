@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.isms.kumar.i_sms">
+    package="com.isms.kumar.Core_Modules">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Splash_Activity">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.isms.kumar.Core_Modules.Splash_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.isms.kumar.Core_Modules.Task_Navigation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.isms.kumar.Core_Modules.FeeCollection_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <activity
+            android:name="com.isms.kumar.Core_Modules.Login_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <activity
+            android:name="com.isms.kumar.Core_Modules.StudentDetails_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
+
     </application>
 
 </manifest>

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">I-SMS</string>
+    <string name="txt_footer">Powered by Ispider Software Solution</string>
+    <string name="remeber_me">Remember Me</string>
+    <string name="loading">Loading..</string>
+    <string name="student_details">Student Details</string>
+    <string name="fees_collection">Fees Collection</string>
+    <string name="student_dues">Student Dues</string>
+    <string name="attendance">Attendance</string>
+    <string name="admission_details">Admission Details</string>
+    <string name="sms">SMS</string>
+
+
+    <string name="home">Home</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="information">Information</string>
+    <string name="message">Are you want to exit?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.isms.kumar.i_sms;
+package com.isms.kumar.Core_Modules;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

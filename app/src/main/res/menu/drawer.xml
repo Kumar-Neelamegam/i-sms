@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/items00"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_studentdetails"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/items0"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_studentdetails"
+            android:title="@string/student_details" />
+
+        <item
+            android:id="@+id/items1"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_feecollection"
+            android:title="@string/fees_collection" />
+
+        <item
+            android:id="@+id/items2"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_studentdue"
+            android:title="@string/student_dues" />
+
+        <item
+            android:id="@+id/items3"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_attendance"
+            android:title="@string/attendance" />
+
+        <item
+            android:id="@+id/items4"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_admissiondetails"
+            android:title="@string/admission_details" />
+
+
+        <item
+            android:id="@+id/items5"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_sms"
+            android:title="@string/sms" />
+
+
+
+    </group>
+
+</menu>

@@ -34,5 +34,43 @@ public class Getter_Setter {
 
     //**********************************************************************************************
 
+    public static class FeeCollection{
+
+        public String getId() {
+            return Id;
+        }
+
+        public void setId(String id) {
+            Id = id;
+        }
+
+        public String getFeeCategory() {
+            return FeeCategory;
+        }
+
+        public void setFeeCategory(String feeCategory) {
+            FeeCategory = feeCategory;
+        }
+
+        public String getFeeAmount() {
+            return FeeAmount;
+        }
+
+        public void setFeeAmount(String feeAmount) {
+            FeeAmount = feeAmount;
+        }
+
+        public String Id;
+        public String FeeCategory;
+        public String FeeAmount;
+
+
+
+    }
+
+
+
+    //**********************************************************************************************
+
 
 }

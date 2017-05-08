@@ -4,21 +4,21 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.desai.vatsal.mydynamictoast.MyDynamicToast;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.isms.kumar.Adapters.FeeCollectionAdapter;
+import com.isms.kumar.Adapters.Getter_Setter;
 import com.isms.kumar.Json_Webservices.RestClientHelper;
 
 import org.json.JSONArray;
@@ -41,9 +41,9 @@ public class FeeCollection_Activity extends Fragment
     TextView graph,grid;
 
     BarChart student_chart;
-    WebView student_webvw;
+    //WebView student_webvw;
 
-
+    RecyclerView recyclerView;
 
     //*********************************************************************************************
 
@@ -91,9 +91,14 @@ public class FeeCollection_Activity extends Fragment
 
         student_chart = (BarChart) v.findViewById(R.id.stu_chart);
         student_chart.setDescription("");
-        student_webvw = (WebView) v.findViewById(R.id.std_webview);
+       /* student_webvw = (WebView) v.findViewById(R.id.std_webview);
         student_webvw.getSettings().setJavaScriptEnabled(true);
         student_webvw.setWebChromeClient(new WebChromeClient());
+*/
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
+        recyclerView.setLayoutManager(layoutManager);
 
 
         Bundle b = getArguments();
@@ -126,6 +131,7 @@ public class FeeCollection_Activity extends Fragment
      */
 
     String webview_values;
+    ArrayList<Getter_Setter.FeeCollection> Dataitems1;
 
     public void LoadAllView() {
 
@@ -194,7 +200,7 @@ public class FeeCollection_Activity extends Fragment
                          * Fee category Info
                          */
                         int Total_amount=0;
-
+                         Dataitems1 = new ArrayList<>();
                         for (int i = 0; i < jsonArray1.length(); i++)
                         {
                             jsonObject = jsonArray1.getJSONObject(i);
@@ -208,13 +214,20 @@ public class FeeCollection_Activity extends Fragment
 
                             xAxis1.add(Fee_Category);
 
-                            categorywise.append( "  <tr>\n" +
+                           /* categorywise.append( "  <tr>\n" +
                                     "\t<td>"+checkNullEmpty(Fee_Category).toString()+"</td>\n" +
                                     "\t<td>"+checkNullEmpty(ConvertToCurrency(Integer.parseInt(Fee_Amount)))+"</td>\n" +
-                                    "\n");
+                                    "\n");*/
+
+                            Getter_Setter.FeeCollection obj = new Getter_Setter.FeeCollection();
+                            obj.setFeeAmount(Fee_Amount);
+                            obj.setFeeCategory(Fee_Category);
+                            Dataitems1.add(obj);
 
 
                         }
+
+
 
                         /**
                          * Loading Bar Chart as Default
@@ -234,7 +247,7 @@ public class FeeCollection_Activity extends Fragment
 
 
 
-                        webview_values = "<!DOCTYPE html>\n" +
+                        /*webview_values = "<!DOCTYPE html>\n" +
                                 "\n" +
                                 "<html lang=\"en\">\n" +
                                 "<head>\n" +
@@ -286,7 +299,7 @@ public class FeeCollection_Activity extends Fragment
                                 "<!----------------------------------------------------------------->\n" +
                                 "</body>\n" +
                                 "</html>                                      ";
-
+*/
 
                         //LoadWebview(webview_values);
 
@@ -318,6 +331,14 @@ public class FeeCollection_Activity extends Fragment
 
     }
 
+    //
+    public void LoadGrid()
+    {
+        ArrayList<Getter_Setter.FeeCollection> DataItems = Dataitems1;
+        FeeCollectionAdapter adapter = new FeeCollectionAdapter(getActivity(), DataItems,SESSION_DATABASE);
+        recyclerView.setAdapter(adapter);
+
+    }
 
     //**********************************************************************************************
 
@@ -350,7 +371,8 @@ public class FeeCollection_Activity extends Fragment
                 grid.setBackgroundColor(getResources().getColor(R.color.white));
                 grid.setTextColor(getResources().getColor(R.color.black));
 
-                student_webvw.setVisibility(View.GONE);
+                //student_webvw.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
                 student_chart.setVisibility(View.VISIBLE);
 
 
@@ -384,10 +406,11 @@ public class FeeCollection_Activity extends Fragment
                 graph.setTextColor(getResources().getColor(R.color.black));
 
 
-                student_webvw.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
                 student_chart.setVisibility(View.GONE);
 
-                LoadWebview(webview_values);
+               // LoadWebview(webview_values);
+                LoadGrid();
 
 
             }
@@ -396,6 +419,11 @@ public class FeeCollection_Activity extends Fragment
         //******************************************************************************************
 
     }
+
+
+    /*
+
+
     public void LoadWebview(String values)
     {
 
@@ -442,6 +470,10 @@ public class FeeCollection_Activity extends Fragment
         }
 
     }
+
+
+    */
+
     //**********************************************************************************************
 
     public class WebAppInterface {

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fee_category"
+            android:text="-"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="1dip"
+            android:background="@color/white"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/fee_amount"
+            android:text="-"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"  />
+
+        <View
+            android:layout_width="1dip"
+            android:background="@color/white"
+            android:layout_height="match_parent"/>
+
+        <info.hoang8f.widget.FButton
+            android:id="@+id/btn_login_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:text="View"
+            android:layout_margin="5dp"
+            android:textColor="@color/white"
+            fbutton:buttonColor="@color/colorPrimaryDark"
+            fbutton:cornerRadius="5dp"
+            fbutton:shadowColor="@color/colorPrimaryDark"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp" />
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

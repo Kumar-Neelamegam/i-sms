@@ -329,14 +329,26 @@
 
 
 
-                            <WebView
+                            <!--<WebView
                                 android:visibility="gone"
                                 android:id="@+id/std_webview"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp">
 
-                            </WebView>
+                            </WebView>-->
+
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:background="@color/colorPrimary"
+                                android:fadeScrollbars="false"
+                                android:layoutAnimation="@anim/layout_bottom_to_top_slide"
+                                android:scrollbars="none" />
+
 
                         </LinearLayout>
 

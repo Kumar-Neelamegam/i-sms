@@ -207,7 +207,7 @@ public class Login_Activity extends AppCompatActivity {
                     // TODO: with error
                     Log.e("Error: ", error);
 
-                    Baseconfig.SweetDialgos(3, Login_Activity.this, "Information", "Failed to get data,,try again", "Ok");
+                    Baseconfig.SweetDialgos(3, Login_Activity.this, "Information", "Failed to get data..try again", "Ok");
                 }
             });
 

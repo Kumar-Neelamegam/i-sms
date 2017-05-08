@@ -1,7 +1,6 @@
 package com.isms.kumar.Core_Modules;
 
-import android.app.Dialog;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,21 +10,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.client.HttpClient;
-import ch.boye.httpclientandroidlib.client.methods.HttpPost;
-import ch.boye.httpclientandroidlib.entity.StringEntity;
-import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class Task_Navigation extends AppCompatActivity {
@@ -37,6 +30,10 @@ public class Task_Navigation extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    TextView Tv_EmployeeName,Tv_EmployeeEmail;
+
+
+    Bundle b;
 
     //*********************************************************************************************
 
@@ -65,68 +62,79 @@ public class Task_Navigation extends AppCompatActivity {
 
     //**********************************************************************************************
 
+    static TextView Title_TextVw;
+
+    String PASSING_DBNAME;
 
     private void GetInitialize()
     {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        try {
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
-        setupDrawerContent(navigationView);
+            Title_TextVw=(TextView)toolbar.findViewById(R.id.txvw_title);
 
 
-    }
 
+            navigationView = (NavigationView) findViewById(R.id.navigation_view);
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-    //**********************************************************************************************
+            //**********************************
 
+            /*"UserDetailsID": 1,
+                    "EmployeeName": "vinoth",
+                    "EmailID": "sdfds@gmail.com",
+                    "UserName": "vinoth",
+                    "InstitutionID": "vinoth1",
+                    "InstitutionName": "IMMACULATE",
+                    "DataBaseName": "ISMSARIRYUR",
+                    "Address1": "Address1",
+                    "Address2": "Address2",
+                    "AreaCode": "area code",
+                    "Pincode": "6005001",
+                    "PhoneNo": "land line",
+                    "FaxNo": "faxno",
+                    "Email": "emaildi@gmail.com",
+                    "Website": "website"
+                    */
 
-    /**
-     * POST DATA TO BHI - SERVER
-     * Inserting New User
-     */
-    private class HttpAsyncTask2 extends AsyncTask<String, Void, String> {
+            b=getIntent().getExtras();
+            String response_str=b.getString("JSON_OBJ");
 
-        Dialog builderDialog;
+            JSONObject jsonObject = new JSONObject(response_str);
+            jsonObject = jsonObject.getJSONObject("ds");
+            JSONArray jsonArray = jsonObject.getJSONArray("Table");
 
+            String EmployeeName="-", EmployeeEmail="-";
 
-        @Override
-        protected String doInBackground(String... urls) {
-
-
-            return POST(urls[0]);
-        }
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            builderDialog = Baseconfig.showCustomDialog(Task_Navigation.this.getString(R.string.please_wait), "Loading..", Task_Navigation.this);
-
-            builderDialog.show();
-        }
-
-
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            // Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
-
-
-            if (builderDialog.isShowing() && builderDialog != null) {
-                builderDialog.dismiss();
+            for(int i=0;i<jsonArray.length();i++)
+            {
+                jsonObject = jsonArray.getJSONObject(i);
+                EmployeeName = jsonObject.getString("EmployeeName");
+                EmployeeEmail = jsonObject.getString("Email");
+                PASSING_DBNAME = jsonObject.getString("DataBaseName");
             }
 
-            //Toast.makeText(getBaseContext(), "Received!"+result, Toast.LENGTH_LONG).show();
 
-            Log.e("BHI - Server: ", result);
+            //Baseconfig.SweetDialgos(3, Task_Navigation.this, "Information2", jsonArray.toString()+"/"+EmployeeName, "Ok");
+            View header=navigationView.getHeaderView(0);
+            Tv_EmployeeName=(TextView)header.findViewById(R.id.txt_employeename);
+            Tv_EmployeeEmail=(TextView)header.findViewById(R.id.txt_employeeemail);
 
+            Tv_EmployeeName.setText(EmployeeName);
+            Tv_EmployeeEmail.setText(EmployeeEmail);
+
+
+            setupDrawerContent(navigationView);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
+
 
     //**********************************************************************************************
 
@@ -253,6 +261,13 @@ public class Task_Navigation extends AppCompatActivity {
 
                 break;
 
+            case R.id.items6:
+                onSectionAttached(7, menuItem);
+
+                // fragmentClass = PinkConnection.class;
+
+                break;
+
 
         }
 
@@ -268,6 +283,9 @@ public class Task_Navigation extends AppCompatActivity {
         Fragment fragment = null;
         FragmentManager fragmentManager;
 
+        Bundle args=new Bundle();
+        args.putString("SESSION_DB_NAME",PASSING_DBNAME);
+
         switch (number) {
             case 0:
 
@@ -277,6 +295,8 @@ public class Task_Navigation extends AppCompatActivity {
 
 
                     fragment = (Fragment) fragmentClass.newInstance();
+                    fragment.setArguments(args);
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -286,16 +306,59 @@ public class Task_Navigation extends AppCompatActivity {
                 // Insert the fragment by replacing any existing fragment
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+                Title_TextVw.setText(R.string.dashboard);
 
 
                 break;
             case 1:
 
+                //new StudentDetails_Activity(Title_TextVw);
+                fragmentClass = StudentDetails_Activity.class;
+
+                try {
+
+
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    fragment.setArguments(args);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+                // Insert the fragment by replacing any existing fragment
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+                Title_TextVw.setText(R.string.student_details);
+
+
                 break;
             case 2:
 
+
+                fragmentClass = FeeCollection_Activity.class;
+                try {
+
+
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    fragment.setArguments(args);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+                // Insert the fragment by replacing any existing fragment
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame, fragment).commit();
+                Title_TextVw.setText(R.string.fees_collection);
+
                 break;
             case 3:
+
+
 
                 break;
             case 4:
@@ -308,12 +371,40 @@ public class Task_Navigation extends AppCompatActivity {
                 break;
 
             case 6:
-                // fragmentClass = PinkConnection.class;
-              /*  Task_Navigation.this.finish();
-                Intent intent6 = new Intent(Task_Navigation.this, Video.class);
-                Task_Navigation.this.startActivity(intent6);
-                Task_Navigation.this.overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-*/
+
+                break;
+
+            case 7:
+
+                new SweetAlertDialog(Task_Navigation.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText(this.getResources().getString(R.string.information))
+                        .setContentText("Are you sure want to signout")
+                        .setCancelText(this.getResources().getString(R.string.no))
+                        .setConfirmText(this.getResources().getString(R.string.yes))
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+
+
+                                sDialog.dismiss();
+
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+
+                                sDialog.dismiss();
+                                Task_Navigation.this.finishAffinity();
+                                startActivity(new Intent(Task_Navigation.this,Login_Activity.class));
+
+
+
+                            }
+                        })
+                        .show();
+
 
                 break;
 
@@ -360,78 +451,8 @@ public class Task_Navigation extends AppCompatActivity {
 
     }
 
+    //*******************************************************************************************************
 
-
-    //*******************************************************************************
-
-    /**
-     * HTTP Avantari
-     * GET & POST METHOD
-     *
-     * @param url
-     * @return
-     * @Muthukumar 01/2/2017
-     */
-    public static String POST(String url) {
-        InputStream inputStream = null;
-        String result = "";
-        try {
-
-            // 1. create HttpClient
-            HttpClient httpclient = new DefaultHttpClient();
-
-            // 2. make POST request to the given URL
-            HttpPost httpPost = new HttpPost(url);
-
-            String json = "";
-
-            // 3. build jsonObject
-            JSONObject jsonObject = new JSONObject();
-           /* jsonObject.accumulate("name", person.getName());
-            jsonObject.accumulate("country", person.getCountry());
-            jsonObject.accumulate("twitter", person.getTwitter());
-*/
-            // 4. convert JSONObject to JSON to String
-            json = jsonObject.toString();
-
-            // ** Alternative way to convert Person object to JSON string usin Jackson Lib
-            // ObjectMapper mapper = new ObjectMapper();
-            // json = mapper.writeValueAsString(person);
-
-            // 5. set json to StringEntity
-            StringEntity se = new StringEntity(json);
-
-            // 6. set httpPost Entity
-            //httpPost.setEntity(se);
-
-            // 7. Set some headers to inform server about the type of the content
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-
-            // 8. Execute POST request to the given URL
-            HttpResponse httpResponse = httpclient.execute(httpPost);
-
-            // 9. receive response as inputStream
-            inputStream = httpResponse.getEntity().getContent();
-
-            // 10. convert inputstream to string
-            if (inputStream != null)
-                result = Baseconfig.convertInputStreamToString(inputStream);
-            else
-                result = "Did not work!";
-
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
-
-        // 11. return result
-        return result;
-
-
-    }
-
-
-    //*******************************************************************************
 
 
 }

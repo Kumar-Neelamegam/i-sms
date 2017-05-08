@@ -3,6 +3,8 @@ package com.isms.kumar.Core_Modules;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -10,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Baseconfig
 {
+
+    private static int InternetFlag;
 
     //*********************************************************************************
     public static Dialog showCustomDialog(String title, String message, Activity ctx)
@@ -177,8 +180,8 @@ public class Baseconfig
                     public void onClick(SweetAlertDialog sDialog) {
 
                         sDialog.dismiss();
-                        //Baseconfig.StopwebService();
-                        ((Activity) ctx).finish();
+                        ((Activity) ctx).finishAffinity();
+
 
 
                     }
@@ -201,6 +204,22 @@ public class Baseconfig
     }
 
     //*********************************************************************************
+
+    public static boolean CheckNW(Context ctx) {
+        ConnectivityManager cn = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nf = cn.getActiveNetworkInfo();
+        if (nf != null && nf.isConnected() == true) {
+
+            Baseconfig.InternetFlag = 1;
+            return true;
+        } else {
+
+            Baseconfig.InternetFlag = 0;
+            return false;
+        }
+    }
+    //*********************************************************************************
+
 
 
 

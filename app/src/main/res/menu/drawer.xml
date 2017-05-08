@@ -8,7 +8,7 @@
             android:id="@+id/items00"
             android:actionMenuTextColor="@color/colorPrimary"
             android:checked="false"
-            android:icon="@drawable/ic_menu_studentdetails"
+            android:icon="@drawable/ic_menu_home"
             android:title="@string/home" />
 
         <item
@@ -53,6 +53,13 @@
             android:checked="false"
             android:icon="@drawable/ic_menu_sms"
             android:title="@string/sms" />
+
+        <item
+            android:id="@+id/items6"
+            android:actionMenuTextColor="@color/colorPrimary"
+            android:checked="false"
+            android:icon="@drawable/ic_menu_signout"
+            android:title="@string/signout" />
 
 
 

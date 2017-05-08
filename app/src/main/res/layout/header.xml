@@ -4,12 +4,14 @@
     xmlns:app1="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/colorPrimary"
     android:divider="#FF6600"
     android:orientation="vertical"
     android:showDividers="beginning|end">
 
     <LinearLayout
+
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
@@ -25,18 +27,18 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_banner"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:padding="15dp"
+                android:padding="5dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/image"
                 app1:civ_border_color="#fff"
-                app1:civ_border_width="5dp" />
+                app1:civ_border_width="1dp" />
 
 
             <TextView
-                android:id="@+id/title_doctorname"
+                android:id="@+id/txt_employeename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -49,7 +51,7 @@
 
 
             <TextView
-                android:id="@+id/textView95"
+                android:id="@+id/txt_employeeemail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -57,7 +59,7 @@
                 android:text="Email"
                 android:textAlignment="center"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#95ffffff" />
+                android:textColor="#ffffff" />
 
 
         </LinearLayout>

@@ -1,14 +1,27 @@
 <resources>
-    <string name="app_name">I-SMS</string>
+    <string name="app_name">i-SMS</string>
     <string name="txt_footer">Powered by Ispider Software Solution</string>
     <string name="remeber_me">Remember Me</string>
     <string name="loading">Loading..</string>
+
     <string name="student_details">Student Details</string>
     <string name="fees_collection">Fees Collection</string>
     <string name="student_dues">Student Dues</string>
     <string name="attendance">Attendance</string>
     <string name="admission_details">Admission Details</string>
     <string name="sms">SMS</string>
+
+    <string-array name="titles">
+
+        <item name="title_student_details"><b>Student</b> Details</item>
+        <item name="title_fees_collection"><b>Fees</b> Collection</item>
+        <item name="title_student_dues"><b>Student</b> Dues</item>
+        <item name="title_attendance">Attendance</item>
+        <item name="title_admission_details"><b>Admission</b> Details</item>
+        <item name="title_sms">SMS</item>
+
+    </string-array>
+
 
 
     <string name="home">Home</string>
@@ -17,5 +30,11 @@
     <string name="message">Are you want to exit?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings</string>
+    <string name="signout">Signout</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="no_connection">No internet connectivity avaialble..try later..</string>
+    <string name="str_ok">Ok</string>
+    <string name="str_information">Information</string>
 
 </resources>

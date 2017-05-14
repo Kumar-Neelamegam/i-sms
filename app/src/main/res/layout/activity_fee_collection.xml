@@ -1,5 +1,6 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/tools"
 
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
@@ -11,6 +12,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v4.widget.NestedScrollView
             layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -49,6 +55,67 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/edt_fromdate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rounded_bg"
+                                    android:focusable="false"
+                                    android:hint="From Date"
+                                    android:padding="10dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black" />
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/edt_todate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@drawable/rounded_bg"
+                                    android:focusable="false"
+                                    android:hint="To Date"
+                                    android:padding="10dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black" />
+
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/btn_srch"
+                                android:layout_weight="5"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/colorPrimary"
+                                android:src="@drawable/ic_btn_srch"
+                          />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/colorPrimary" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -75,17 +142,20 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="4">
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/rounded_bg_selected"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:padding="10dp"
+                                android:layout_weight="0.5"
+                                android:padding="5dp"
                                 android:text="Bill Count :"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/white" />
 
 
                             <TextView
@@ -93,25 +163,25 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:padding="10dp"
+                                android:padding="5dp"
                                 android:text="-"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@android:color/holo_orange_dark" />
+                                android:textColor="@android:color/white" />
 
                             <View
                                 android:layout_width="1dip"
                                 android:layout_height="match_parent"
                                 android:layout_margin="5dp"
-                                android:background="@color/colorPrimary" />
+                                android:background="@color/white" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:padding="10dp"
+                                android:layout_weight="0.5"
+                                android:padding="5dp"
                                 android:text="Cancelled :"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/white" />
 
 
                             <TextView
@@ -119,10 +189,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:padding="10dp"
+                                android:padding="5dp"
                                 android:text="-"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@android:color/holo_red_dark" />
+                                android:textColor="@android:color/white" />
 
                         </LinearLayout>
 
@@ -136,16 +206,17 @@
                 //2. Second cardview
 
                 <android.support.v7.widget.CardView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="5dp"
                     app:elevation="15dp">
 
 
                     <LinearLayout
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -245,75 +316,75 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                    <LinearLayout
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="Calibri"
-                            android:padding="10dp"
-                            android:text="Category wise count"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/black" />
-
-
-                    </LinearLayout>
-
-
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="30dp"
-                            android:layout_marginRight="30dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/rounded_bg"
+                            android:layout_margin="5dp"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:padding="5dp">
 
                             <TextView
-                                android:id="@+id/txt_graph"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_margin="5dp"
-                                android:layout_marginRight="10dp"
                                 android:layout_weight="1"
-                                android:drawableLeft="@drawable/ic_graph"
-                                android:drawablePadding="5dp"
-                                android:gravity="center_vertical"
-                                android:padding="5dp"
-                                android:text="Graph View"
-                                android:textColor="@color/colorPrimary" />
+                                android:text="Category wise Info"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
 
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp"
-                                android:background="@color/colorPrimaryDark"
-                                android:padding="2dp" />
-
-                            <TextView
-                                android:id="@+id/txt_grid"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_margin="5dp"
                                 android:layout_marginLeft="10dp"
-                                android:drawableLeft="@drawable/ic_grid"
-                                android:drawablePadding="5dp"
-                                android:gravity="center_vertical"
-                                android:padding="5dp"
-                                android:text="Grid View"
-                                android:textColor="@color/black" />
+                                android:layout_marginRight="10dp"
+                                android:background="@drawable/rounded_bg"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/txt_grid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_margin="5dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:drawableLeft="@drawable/ic_grid"
+                                    android:drawablePadding="5dp"
+                                    android:gravity="center_vertical"
+                                    android:padding="5dp"
+                                    android:textColor="@color/black" />
+
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:background="@color/colorPrimaryDark"
+                                    android:padding="2dp" />
+
+
+                                <TextView
+                                    android:id="@+id/txt_graph"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_margin="5dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_weight="1"
+                                    android:drawableLeft="@drawable/ic_graph"
+                                    android:drawablePadding="5dp"
+                                    android:gravity="center_vertical"
+                                    android:padding="5dp"
+                                    android:textColor="@color/colorPrimary" />
+
+                            </LinearLayout>
 
 
                         </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -324,9 +395,8 @@
                             <com.github.mikephil.charting.charts.BarChart
                                 android:id="@+id/stu_chart"
                                 android:layout_width="match_parent"
-                                android:layout_height="350dp"
+                                android:layout_height="450dp"
                                 android:layout_margin="5dp" />
-
 
 
                             <!--<WebView
@@ -338,21 +408,141 @@
 
                             </WebView>-->
 
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/recycler_view"
+                            <LinearLayout
+                                android:id="@+id/grid_layout"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:background="@color/colorPrimary"
-                                android:fadeScrollbars="false"
-                                android:layoutAnimation="@anim/layout_bottom_to_top_slide"
-                                android:scrollbars="none" />
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:background="@color/fbutton_color_orange"
+                                    android:orientation="horizontal"
+                                    android:padding="10dp">
+
+                                    <TextView
+                                        android:id="@+id/fee_category"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:padding="5dp"
+                                        android:text="Category"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/white" />
+
+                                    <View
+                                        android:layout_width="1dip"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:padding="5dp"
+                                        android:text="Amount"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/white" />
+
+                                    <View
+                                        android:layout_width="1dip"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:padding="5dp"
+                                        android:text="Details"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/white" />
+
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dip"
+                                    android:background="@color/white" />
+
+
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/recycler_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:background="@color/colorPrimary"
+                                    android:fadeScrollbars="false"
+                                    android:layoutAnimation="@anim/layout_bottom_to_top_slide"
+                                    android:scrollbars="none" />
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:background="#D33EE5"
+                                    android:orientation="horizontal"
+                                    android:padding="10dp">
+
+                                    <TextView
+                                        android:id="@+id/fee_total"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:padding="5dp"
+                                        android:text="Total"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/white" />
+
+                                    <View
+                                        android:layout_width="1dip"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white" />
+
+                                    <TextView
+                                        android:id="@+id/txt_total_grid"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:padding="5dp"
+                                        android:text="-"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/white" />
+
+                                    <View
+                                        android:layout_width="1dip"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/white" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:padding="5dp"
+                                        android:text="Details"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/white"
+                                        android:visibility="invisible" />
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-
 
                     </LinearLayout>
 
@@ -364,6 +554,8 @@
 
         </android.support.v4.widget.NestedScrollView>
 
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

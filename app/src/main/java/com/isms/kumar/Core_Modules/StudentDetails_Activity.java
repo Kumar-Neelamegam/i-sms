@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.desai.vatsal.mydynamictoast.MyDynamicToast;
 import com.github.mikephil.charting.charts.BarChart;
@@ -105,6 +107,27 @@ public class StudentDetails_Activity extends Fragment {
             Baseconfig.SweetDialgos(3, getActivity(), getString(R.string.str_information), getString(R.string.no_connection), getString(R.string.str_ok));
         }
 
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_red_dark, android.R.color.holo_blue_bright);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Your refresh code here
+
+                Toast.makeText(getActivity(), "refreshing...", Toast.LENGTH_SHORT).show();
+
+                if (Baseconfig.CheckNW(getActivity())) {
+
+                    LoadAllView();
+
+                    swipeRefreshLayout.setRefreshing(false);
+
+                } else {
+                    Baseconfig.SweetDialgos(3, getActivity(), getString(R.string.str_information), getString(R.string.no_connection), getString(R.string.str_ok));
+                }
+
+            }
+        });
 
     }
 
@@ -159,28 +182,37 @@ public class StudentDetails_Activity extends Fragment {
                          * @Muthukumar
                          */
 
-                        String MALE_STUDENTS_COUNT = "-", FEMALE_STUDENTS_COUNT = "-";
+                        String MALE_STUDENTS_COUNT = "0", FEMALE_STUDENTS_COUNT = "0";
 
-                        for (int i = 0; i < jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++)
+                        {
                             jsonObject = jsonArray.getJSONObject(i);
                             String Category = jsonObject.getString("Catgory");
                             String Nos = jsonObject.getString("Nos");
                             Log.e("Category + Nos: ", Category + " / " + Nos);
 
-                            if (Category.toString().equalsIgnoreCase("Male")) {
+                            if (Category.toString().equals("Male")) {
                                 MALE_STUDENTS_COUNT = Nos;
-                            } else {
+                            } else if(Category.toString().equals("Female")){
                                 FEMALE_STUDENTS_COUNT = Nos;
                             }
+
+                           // Toast.makeText(getActivity(), MALE_STUDENTS_COUNT+" - "+Category+" - "+ Nos, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), FEMALE_STUDENTS_COUNT+" - "+Category+" - "+ Nos, Toast.LENGTH_SHORT).show();
 
                         }
 
 
-                        int TotalStrength = Integer.parseInt(MALE_STUDENTS_COUNT) + Integer.parseInt(FEMALE_STUDENTS_COUNT);
 
-                        LoadAnimatedTextView(Integer.parseInt(MALE_STUDENTS_COUNT), male);
-                        LoadAnimatedTextView(Integer.parseInt(FEMALE_STUDENTS_COUNT), female);
-                        LoadAnimatedTextView(TotalStrength, total_Stu);
+                       // LoadAnimatedTextView(Integer.parseInt(MALE_STUDENTS_COUNT), male);
+                       // LoadAnimatedTextView(Integer.parseInt(FEMALE_STUDENTS_COUNT), female);
+
+                        male.setText(MALE_STUDENTS_COUNT);
+                        female.setText(FEMALE_STUDENTS_COUNT);
+
+                        int TotalStrength = Integer.parseInt(MALE_STUDENTS_COUNT) + Integer.parseInt(FEMALE_STUDENTS_COUNT);
+                        //LoadAnimatedTextView(TotalStrength, total_Stu); // Uncomment this line animate textview - for total
+                        total_Stu.setText(String.valueOf(TotalStrength));
 
 
                         //**************************************************************************
@@ -188,6 +220,10 @@ public class StudentDetails_Activity extends Fragment {
                         StringBuilder standardwise=new StringBuilder();
                         StringBuilder religionwise=new StringBuilder();
                         StringBuilder communitywise=new StringBuilder();
+
+                        int Total_Male=0;
+                        int Total_Female=0;
+                        int Total_AllTotal=0;
 
                         /**
                          * Standard Info
@@ -213,14 +249,29 @@ public class StudentDetails_Activity extends Fragment {
                             xAxis1.add(Department);
 
                             standardwise.append( "  <tr>\n" +
-                                    "    <td>"+Department+"</td>\n" +
-                                    "    <td>"+Male+"</td>\n" +
-                                    "\t<td>"+checkNullEmpty(Female).toString()+"</td>\n" +
-                                    "\t<td>"+checkNullEmpty(Total)+"</td>\n" +
+                                    "    <td align=\"center\">"+Department+"</td>\n" +
+                                    "    <td align=\"center\">"+Male+"</td>\n" +
+                                    "\t<td align=\"center\">"+checkNullEmpty(Female).toString()+"</td>\n" +
+                                    "\t<td align=\"center\">"+checkNullEmpty(Total)+"</td>\n" +
                                     "  </tr>\n");
+
+                            Total_Male+=Integer.parseInt(Male);
+                            Total_Female+=Integer.parseInt(Female);
+                            Total_AllTotal+=Integer.parseInt(Total);
+
 
 
                         }
+
+                        standardwise.append("  <tr>\n" +
+                                "    <td align=\"center\" bgcolor=\"#D33EE5\" > <font color=\"#fff\">Total</td>\n" +
+                                "    <td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\">"+Total_Male+"</td>\n" +
+                                "\t<td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\">"+Total_Female+"</td>\n" +
+                                "\t<td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\"><font color=\"#fff\">"+Total_AllTotal+"</td>\n" +
+                                "  </tr>\n");
+
+
+
 
                         /**
                          * Loading Bar Chart as Default
@@ -231,11 +282,17 @@ public class StudentDetails_Activity extends Fragment {
                             student_chart.setData(data);
                             student_chart.animateXY(2000, 2000);
                             student_chart.invalidate();
+                            student_chart.setScaleMinima(2f, 1f);
+
+
                         }
 
 
 
                         //**************************************************************************
+                        Total_Male=0;
+                        Total_Female=0;
+                        Total_AllTotal=0;
 
                         /**
                          * Religion Info
@@ -248,36 +305,72 @@ public class StudentDetails_Activity extends Fragment {
                             String Total = jsonObject.getString("Total");
 
                             religionwise.append( "  <tr>\n" +
-                                    "    <td>"+ReligionName+"</td>\n" +
-                                    "    <td>"+Male+"</td>\n" +
-                                    "\t<td>"+checkNullEmpty(Female).toString()+"</td>\n" +
-                                    "\t<td>"+checkNullEmpty(Total)+"</td>\n" +
+                                    "    <td align=\"center\">"+ReligionName+"</td>\n" +
+                                    "    <td align=\"center\">"+Male+"</td>\n" +
+                                    "\t<td align=\"center\">"+checkNullEmpty(Female).toString()+"</td>\n" +
+                                    "\t<td align=\"center\">"+checkNullEmpty(Total)+"</td>\n" +
                                     "  </tr>\n");
+
+                            Total_Male+=Integer.parseInt(Male);
+                            Total_Female+=Integer.parseInt(Female);
+                            Total_AllTotal+=Integer.parseInt(Total);
 
 
                         }
+
+
+                        religionwise.append("  <tr>\n" +
+                                "    <td align=\"center\" bgcolor=\"#D33EE5\" > <font color=\"#fff\">Total</td>\n" +
+                                "    <td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\">"+Total_Male+"</td>\n" +
+                                "\t<td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\">"+Total_Female+"</td>\n" +
+                                "\t<td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\"><font color=\"#fff\">"+Total_AllTotal+"</td>\n" +
+                                "  </tr>\n");
+
+
+
+
 
 
                         //**************************************************************************
                         /**
                          * Caste Info
                          */
+                        Total_Male=0;
+                        Total_Female=0;
+                        Total_AllTotal=0;
 
                         for (int i = 0; i < jsonArray3.length(); i++) {
                             jsonObject = jsonArray3.getJSONObject(i);
                             String Community = jsonObject.getString("Community");
                             String Male = jsonObject.getString("Male");
                             String Female = jsonObject.getString("Female");
-                            String Total = jsonObject.getString("Female");
+                            String Total = jsonObject.getString("Total");
 
                             communitywise.append( "  <tr>\n" +
-                                    "    <td>"+Community+"</td>\n" +
-                                    "    <td>"+Male+"</td>\n" +
-                                    "\t<td>"+checkNullEmpty(Female).toString()+"</td>\n" +
-                                    "\t<td>"+checkNullEmpty(Total)+"</td>\n" +
+                                    "    <td align=\"center\">"+Community+"</td>\n" +
+                                    "    <td align=\"center\">"+Male+"</td>\n" +
+                                    "\t<td align=\"center\">"+checkNullEmpty(Female).toString()+"</td>\n" +
+                                    "\t<td align=\"center\">"+checkNullEmpty(Total)+"</td>\n" +
                                     "  </tr>\n");
 
+                            Total_Male+=Integer.parseInt(Male);
+                            Total_Female+=Integer.parseInt(Female);
+                            Total_AllTotal+=Integer.parseInt(Total);
+
+
                         }
+
+                        communitywise.append("  <tr>\n" +
+                                "    <td align=\"center\" bgcolor=\"#D33EE5\" > <font color=\"#fff\">Total</td>\n" +
+                                "    <td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\">"+Total_Male+"</td>\n" +
+                                "\t<td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\">"+Total_Female+"</td>\n" +
+                                "\t<td align=\"center\" bgcolor=\"#D33EE5\"><font color=\"#fff\"><font color=\"#fff\">"+Total_AllTotal+"</td>\n" +
+                                "  </tr>\n");
+
+
+
+
+
 
 
                         //**************************************************************************
@@ -313,10 +406,10 @@ public class StudentDetails_Activity extends Fragment {
                                 "<div class=\"table-responsive\">          \n" +
                                 "<table class=\"table table-bordered\">\n" +
                                 "  <tr>\n" +
-                                "    <th bgcolor=\"#16A085\"><font color=\"#fff\">Standard</font></th>\n" +
-                                "    <th bgcolor=\"#16A085\"><font color=\"#fff\">Male</font></th>\n" +
-                                "\t <th bgcolor=\"#16A085\"><font color=\"#fff\">Female</font></th>\n" +
-                                "\t<th bgcolor=\"#16A085\"><font color=\"#fff\">Total</font></th>\n" +
+                                "    <th bgcolor=\"#ffa700\"><font color=\"#fff\">Standard</font></th>\n" +
+                                "    <th bgcolor=\"#ffa700\"><font color=\"#fff\">Male</font></th>\n" +
+                                "\t <th bgcolor=\"#ffa700\"><font color=\"#fff\">Female</font></th>\n" +
+                                "\t<th bgcolor=\"#ffa700\"><font color=\"#fff\">Total</font></th>\n" +
                                 "\n" +
                                 "  </tr>\n" +
 
@@ -333,10 +426,10 @@ public class StudentDetails_Activity extends Fragment {
                                 "<div class=\"table-responsive\">          \n" +
                                 "<table class=\"table table-bordered\">\n" +
                                 "  <tr>\n" +
-                                "    <th bgcolor=\"#16A085\"><font color=\"#fff\">Religion</font></th>\n" +
-                                "    <th bgcolor=\"#16A085\"><font color=\"#fff\">Male</font></th>\n" +
-                                "\t <th bgcolor=\"#16A085\"><font color=\"#fff\">Female</font></th>\n" +
-                                "\t<th bgcolor=\"#16A085\"><font color=\"#fff\">Total</font></th>\n" +
+                                "    <th bgcolor=\"#ffa700\"><font color=\"#fff\">Religion</font></th>\n" +
+                                "    <th bgcolor=\"#ffa700\"><font color=\"#fff\">Male</font></th>\n" +
+                                "\t <th bgcolor=\"#ffa700\"><font color=\"#fff\">Female</font></th>\n" +
+                                "\t<th bgcolor=\"#ffa700\"><font color=\"#fff\">Total</font></th>\n" +
                                 "\n" +
                                 "  </tr>\n" +
 
@@ -352,10 +445,10 @@ public class StudentDetails_Activity extends Fragment {
                                 "<div class=\"table-responsive\">          \n" +
                                 "<table class=\"table table-bordered\">\n" +
                                 "  <tr>\n" +
-                                "    <th bgcolor=\"#16A085\"><font color=\"#fff\">Community</font></th>\n" +
-                                "\t <th bgcolor=\"#16A085\"><font color=\"#fff\">Male</font></th>\n" +
-                                "\t<th bgcolor=\"#16A085\"><font color=\"#fff\">Female</font></th>\n" +
-                                "\t<th bgcolor=\"#16A085\"><font color=\"#fff\">Total</font></th>\n" +
+                                "    <th bgcolor=\"#ffa700\"><font color=\"#fff\">Community</font></th>\n" +
+                                "\t <th bgcolor=\"#ffa700\"><font color=\"#fff\">Male</font></th>\n" +
+                                "\t<th bgcolor=\"#ffa700\"><font color=\"#fff\">Female</font></th>\n" +
+                                "\t<th bgcolor=\"#ffa700\"><font color=\"#fff\">Total</font></th>\n" +
                                 "\n" +
                                 "  </tr>\n" +
 
@@ -375,6 +468,9 @@ public class StudentDetails_Activity extends Fragment {
 
 
                         //LoadWebview(webview_values);
+
+                        grid.performClick();
+
 
 
                     } else {
@@ -400,6 +496,7 @@ public class StudentDetails_Activity extends Fragment {
 
 
         Controlistener();
+
 
 
     }
@@ -444,7 +541,7 @@ public class StudentDetails_Activity extends Fragment {
 
             student_webvw.loadDataWithBaseURL("file:///android_asset/", values, "text/html", "utf-8", null);
 
-            MyDynamicToast.successMessage(getActivity(), "Student Information Loaded Successfully...");
+           // MyDynamicToast.successMessage(getActivity(), "Student Information Loaded Successfully...");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -531,7 +628,7 @@ public class StudentDetails_Activity extends Fragment {
             public void onClick(View v) {
 
 
-                graph.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected));
+                graph.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected1));
                 graph.setTextColor(getResources().getColor(R.color.white));
 
                 grid.setBackgroundColor(getResources().getColor(R.color.white));
@@ -551,6 +648,9 @@ public class StudentDetails_Activity extends Fragment {
                     student_chart.setData(data);
                     student_chart.animateXY(2000, 2000);
                     student_chart.invalidate();
+                    student_chart.setScaleMinima(2f, 1f);
+
+
                 }
 
 
@@ -566,7 +666,7 @@ public class StudentDetails_Activity extends Fragment {
             public void onClick(View v) {
 
 
-                grid.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected));
+                grid.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected1));
                 grid.setTextColor(getResources().getColor(R.color.white));
 
 
@@ -584,6 +684,8 @@ public class StudentDetails_Activity extends Fragment {
         });
 
         //******************************************************************************************
+
+
 
     }
 
@@ -613,13 +715,13 @@ public class StudentDetails_Activity extends Fragment {
         dataSets = new ArrayList<>();
 
         barDataSet1 = new BarDataSet(valueSet1, "Male");
-        barDataSet1.setColor(Color.rgb(200, 0, 0));
+        barDataSet1.setColor(Color.rgb(136,37,180));
 
         barDataSet2 = new BarDataSet(valueSet2, "Female");
-        barDataSet2.setColor(Color.rgb(218, 165, 32));
+        barDataSet2.setColor(Color.rgb(255,167,0));
 
-        barDataSet3 = new BarDataSet(valueSet2, "Total");
-        barDataSet3.setColor(Color.rgb(218, 165, 150));
+        barDataSet3 = new BarDataSet(valueSet3, "Total");
+        barDataSet3.setColor(Color.rgb(6,171,0));
 
 
         dataSets.add(barDataSet1);

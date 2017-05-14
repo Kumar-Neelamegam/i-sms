@@ -50,6 +50,7 @@
                         android:id="@+id/ic_exit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="visible"
                         android:layout_gravity="center"
                         android:background="@drawable/ic_exit" />
 
@@ -77,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:scrollbarThumbVertical="@color/float_transparent"
         app:headerLayout="@layout/header"
         app:menu="@menu/drawer" />
 

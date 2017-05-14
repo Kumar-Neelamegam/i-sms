@@ -1,9 +1,11 @@
 package com.isms.kumar.Core_Modules;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,7 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -25,7 +32,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -45,6 +55,12 @@ public class FeeCollection_Activity extends Fragment
 
     RecyclerView recyclerView;
 
+    LinearLayout gridLinear;
+
+    TextView GrdView_Total;
+
+    EditText FromDate,ToDate;
+    ImageButton Search_Btn;
     //*********************************************************************************************
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -75,6 +91,8 @@ public class FeeCollection_Activity extends Fragment
     //**********************************************************************************************
 
     String SESSION_DATABASE;
+    final Calendar myCalendar = Calendar.getInstance();
+
 
     private void GetInitialize(View v)
     {
@@ -86,6 +104,12 @@ public class FeeCollection_Activity extends Fragment
         cons_count = (TextView)v.findViewById(R.id.txt_cons_count);
         cons_amt = (TextView)v.findViewById(R.id.txt_cons_amt);
 
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+
         graph = (TextView)v.findViewById(R.id.txt_graph);
         grid = (TextView)v.findViewById(R.id.txt_grid);
 
@@ -95,10 +119,89 @@ public class FeeCollection_Activity extends Fragment
         student_webvw.getSettings().setJavaScriptEnabled(true);
         student_webvw.setWebChromeClient(new WebChromeClient());
 */
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
-        recyclerView.setLayoutManager(layoutManager);
+
+        gridLinear = (LinearLayout)v.findViewById(R.id.grid_layout);
+        GrdView_Total=  (TextView)v.findViewById(R.id.txt_total_grid);
+
+        FromDate=(EditText)v.findViewById(R.id.edt_fromdate);
+        ToDate=(EditText)v.findViewById(R.id.edt_todate);
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        FromDate.setText(dateFormat.format(new Date()));
+        ToDate.setText(dateFormat.format(new Date()));
+
+        Search_Btn=(ImageButton)v.findViewById(R.id.btn_srch);
+
+
+
+
+        final DatePickerDialog.OnDateSetListener From_date = new DatePickerDialog.OnDateSetListener() {
+
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                FromDate.setText(sdf.format(myCalendar.getTime()));
+
+
+            }
+        };
+
+
+
+
+        final DatePickerDialog.OnDateSetListener To_date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                ToDate.setText(sdf.format(myCalendar.getTime()));
+            }
+
+        };
+
+
+        FromDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getActivity(), From_date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+
+        ToDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getActivity(), To_date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
 
         Bundle b = getArguments();
@@ -116,9 +219,50 @@ public class FeeCollection_Activity extends Fragment
 
 
 
+        Search_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Baseconfig.CheckNW(getActivity())) {
+
+                    LoadAllView();
+
+                } else {
+                    Baseconfig.SweetDialgos(3, getActivity(), getString(R.string.str_information), getString(R.string.no_connection), getString(R.string.str_ok));
+                }
+
+
+            }
+        });
+
+
+
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark, android.R.color.holo_red_dark, android.R.color.holo_blue_bright);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Your refresh code here
+
+                Toast.makeText(getActivity(), "refreshing...", Toast.LENGTH_SHORT).show();
+
+                if (Baseconfig.CheckNW(getActivity())) {
+
+                    LoadAllView();
+
+                    swipeRefreshLayout.setRefreshing(false);
+
+                } else {
+                    Baseconfig.SweetDialgos(3, getActivity(), getString(R.string.str_information), getString(R.string.no_connection), getString(R.string.str_ok));
+                }
+
+            }
+        });
+
+
+
+
     }
-
-
 
 
     //**********************************************************************************************
@@ -137,6 +281,9 @@ public class FeeCollection_Activity extends Fragment
 
 
         String FROMDATE="",TODATE="";
+
+        FROMDATE = FromDate.getText().toString();
+        TODATE = ToDate.getText().toString();
 
         //Original URL
         String URL = "http://api.ispidersolutions.com/schoolapi/api/App/GetBillingDetails?DatabaseName="+SESSION_DATABASE+"&FromDate="+FROMDATE+"&ToDate="+TODATE+"";
@@ -200,6 +347,7 @@ public class FeeCollection_Activity extends Fragment
                          * Fee category Info
                          */
                         int Total_amount=0;
+
                          Dataitems1 = new ArrayList<>();
                         for (int i = 0; i < jsonArray1.length(); i++)
                         {
@@ -224,9 +372,9 @@ public class FeeCollection_Activity extends Fragment
                             obj.setFeeCategory(Fee_Category);
                             Dataitems1.add(obj);
 
-
                         }
 
+                        GrdView_Total.setText(ConvertToCurrency(Total_amount));
 
 
                         /**
@@ -238,8 +386,11 @@ public class FeeCollection_Activity extends Fragment
                             student_chart.setData(data);
                             student_chart.animateXY(2000, 2000);
                             student_chart.invalidate();
+                            student_chart.setScaleMinima(2f, 1f);
                         }
 
+
+                        grid.performClick();
 
 
                         //**************************************************************************
@@ -334,8 +485,14 @@ public class FeeCollection_Activity extends Fragment
     //
     public void LoadGrid()
     {
+
+
+        String FROMDATE="",TODATE="";
+        FROMDATE = FromDate.getText().toString();
+        TODATE = ToDate.getText().toString();
+
         ArrayList<Getter_Setter.FeeCollection> DataItems = Dataitems1;
-        FeeCollectionAdapter adapter = new FeeCollectionAdapter(getActivity(), DataItems,SESSION_DATABASE);
+        FeeCollectionAdapter adapter = new FeeCollectionAdapter(getActivity(), DataItems,SESSION_DATABASE,FROMDATE,TODATE);
         recyclerView.setAdapter(adapter);
 
     }
@@ -352,7 +509,7 @@ public class FeeCollection_Activity extends Fragment
 
         String return_str="0";
 
-        return_str=  NumberFormat.getNumberInstance(Locale.US).format(Value);
+        return_str=  NumberFormat.getNumberInstance(Locale.ENGLISH).format(Value);
 
         return return_str;
     }
@@ -365,14 +522,14 @@ public class FeeCollection_Activity extends Fragment
             @Override
             public void onClick(View v) {
 
-                graph.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected));
+                graph.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected1));
                 graph.setTextColor(getResources().getColor(R.color.white));
 
                 grid.setBackgroundColor(getResources().getColor(R.color.white));
                 grid.setTextColor(getResources().getColor(R.color.black));
 
                 //student_webvw.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.GONE);
+                gridLinear.setVisibility(View.GONE);
                 student_chart.setVisibility(View.VISIBLE);
 
 
@@ -384,6 +541,7 @@ public class FeeCollection_Activity extends Fragment
                     student_chart.setData(data);
                     student_chart.animateXY(2000, 2000);
                     student_chart.invalidate();
+                    student_chart.setScaleMinima(2f, 1f);
                 }
 
 
@@ -398,7 +556,7 @@ public class FeeCollection_Activity extends Fragment
             @Override
             public void onClick(View v) {
 
-                grid.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected));
+                grid.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_bg_selected1));
                 grid.setTextColor(getResources().getColor(R.color.white));
 
 
@@ -406,7 +564,7 @@ public class FeeCollection_Activity extends Fragment
                 graph.setTextColor(getResources().getColor(R.color.black));
 
 
-                recyclerView.setVisibility(View.VISIBLE);
+                gridLinear.setVisibility(View.VISIBLE);
                 student_chart.setVisibility(View.GONE);
 
                // LoadWebview(webview_values);
@@ -566,7 +724,7 @@ public class FeeCollection_Activity extends Fragment
         dataSets = new ArrayList<>();
 
         barDataSet1 = new BarDataSet(valueSet1, "Amount");
-        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        barDataSet1.setColor(Color.rgb(23,180,168));
 
 
 

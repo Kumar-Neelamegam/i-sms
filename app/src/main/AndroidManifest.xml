@@ -44,20 +44,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name="com.isms.kumar.Core_Modules.FeeCollection_Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
 
         <activity
             android:name="com.isms.kumar.Core_Modules.Login_Activity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
 
         <activity
-            android:name="com.isms.kumar.Core_Modules.StudentDetails_Activity"
+            android:name="com.isms.kumar.Core_Modules.Particular_Info"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

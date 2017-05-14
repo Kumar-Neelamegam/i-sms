@@ -175,15 +175,12 @@ public class RestClientHelper {
     }
 
 
-    Dialog builderDialog;
-
     private void execute(final Request.Builder builder, final RestClientListener restClientListener) {
 
 
-        builderDialog = Baseconfig.showCustomDialog("Please wait", "Loading data...", (Activity) context);
+        Dialog builderDialog = Baseconfig.showCustomDialog("Please wait", "Loading data...", (Activity) context);
         builderDialog.setCancelable(false);
         builderDialog.show();
-
 
         executor.execute(new Runnable() {
             @Override

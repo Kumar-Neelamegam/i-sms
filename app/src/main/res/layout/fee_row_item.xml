@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/layout_rowitem"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary">
 
     <LinearLayout
+        android:padding="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -43,24 +45,25 @@
             android:background="@color/white"
             android:layout_height="match_parent"/>
 
-        <info.hoang8f.widget.FButton
+
+        <ImageButton
+
+            android:padding="10dp"
             android:id="@+id/btn_login_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:text="View"
-            android:layout_margin="5dp"
-            android:textColor="@color/white"
-            fbutton:buttonColor="@color/colorPrimaryDark"
-            fbutton:cornerRadius="5dp"
-            fbutton:shadowColor="@color/colorPrimaryDark"
-            fbutton:shadowEnabled="true"
-            fbutton:shadowHeight="5dp" />
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_action_view"
+            android:background="@null"
+           />
 
 
 
     </LinearLayout>
+
+    <View
+        android:background="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"/>
 
 
 

@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.isms.kumar.Json_Webservices.RestClientHelper;
 
@@ -35,6 +37,7 @@ public class Login_Activity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
 
+    TextView Quit;
     /**
      * Created at 06/05/2017
      * Muthukumar N & Vidhya K
@@ -49,9 +52,19 @@ public class Login_Activity extends AppCompatActivity {
             GetInitialize();
             Controlistener();
 
+
             //Remeber Me
             loadSavedPreferences();
 
+
+            // Clicking==================//
+            /**
+             * Hides the soft keyboard
+             */
+            if (getCurrentFocus() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,6 +87,8 @@ public class Login_Activity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         exit = (ImageView) toolbar.findViewById(R.id.ic_exit);
 
+        Quit = (TextView) findViewById(R.id.txt_quit);
+
     }
 
 
@@ -82,6 +97,15 @@ public class Login_Activity extends AppCompatActivity {
     private void Controlistener() {
 
         setSupportActionBar(toolbar);
+
+        Quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               // Baseconfig.ExitSweetDialog(Login_Activity.this, null);
+
+            }
+        });
 
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,10 +159,24 @@ public class Login_Activity extends AppCompatActivity {
         if (LOCAL_JSON_LOGIN_INFO.length()>0)//Session local iruntha direct next activity
         {
 
+            ////////////////////////////////////////////////////////////////////////////////
+
+            if (remember.isChecked()) {
+                savePreferences("CHECKBOX", remember.isChecked());
+                savePreferences("NAME", username.getText().toString());
+                savePreferences1("PWD", password.getText().toString());
+            } else {
+                clearPreference();
+            }
+
+            //////////////////////////////////////////////////////////////////////////////////
+
+
             Login_Activity.this.finish();
             Intent next = new Intent(Login_Activity.this, Task_Navigation.class);
             next.putExtra("JSON_OBJ", LOCAL_JSON_LOGIN_INFO.toString());
             startActivity(next);
+
         } else//ilaina api json get panitu save panum - first time matum call agum
         {
 
@@ -167,15 +205,15 @@ public class Login_Activity extends AppCompatActivity {
                             try {
 
                                 ////////////////////////////////////////////////////////////////////////////////
-                                savePreferences("CHECKBOX", remember.isChecked());
-                                {
+
                                     if (remember.isChecked()) {
+                                        savePreferences("CHECKBOX", remember.isChecked());
                                         savePreferences("NAME", username.getText().toString());
                                         savePreferences1("PWD", password.getText().toString());
                                     } else {
                                         clearPreference();
                                     }
-                                }
+
                                 //////////////////////////////////////////////////////////////////////////////////
 
                                 savePreferences1("JSON_OBJ_LOCAL", Response_Pass.toString());
@@ -228,6 +266,8 @@ public class Login_Activity extends AppCompatActivity {
     String LOCAL_JSON_LOGIN_INFO;
 
     private boolean loadSavedPreferences() {
+
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean cbValue = sp.getBoolean("CHECKBOX", false);
@@ -240,6 +280,8 @@ public class Login_Activity extends AppCompatActivity {
         if (cbValue) {
             remember.setChecked(true);
 
+
+
         } else {
             remember.setChecked(false);
         }
@@ -248,15 +290,17 @@ public class Login_Activity extends AppCompatActivity {
         this.password.setText(password);
 
 
-        if (remember.isChecked()) {
+        if (remember.isChecked())
+        {
             username.clearFocus();
 
             this.password.clearFocus();
 
-            login.setFocusable(true);
+            //login.setFocusable(true);
         }
 
         if (name.length() > 0 && password.length() > 0 && json_valu.toString().length()>0) {
+
 
             return true;
         } else {
@@ -295,13 +339,7 @@ public class Login_Activity extends AppCompatActivity {
         edit.commit();
     }
 
-    private void savePreferences2(String key, String value) {
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor edit = sp.edit();
-        edit.putString(key, value);
-        edit.commit();
-    }
+
 
     private void clearPreference() {
         SharedPreferences sp = PreferenceManager

@@ -17,6 +17,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -220,7 +222,24 @@ public class Baseconfig
     }
     //*********************************************************************************
 
+    /**
+     * Convert number to currency
+     * @param Value
+     * @return
+     */
+    public static String ConvertToCurrency(int Value)
+    {
+
+        String return_str="0";
+
+        return_str=  NumberFormat.getNumberInstance(Locale.ENGLISH).format(Value);
+
+        return return_str;
+    }
 
 
 
+//**********************************************************************************************
+
+    //ends
 }

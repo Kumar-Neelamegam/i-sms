@@ -142,7 +142,7 @@ public class Particular_Info extends AppCompatActivity {
 
                         Log.e("Particulars: ", FinalResponse_Str);
 
-                        JSONObject jsonObject = new JSONObject(response);
+                        JSONObject jsonObject = new JSONObject(FinalResponse_Str);
                         jsonObject = jsonObject.getJSONObject("ds");
                         JSONArray jsonArray = jsonObject.getJSONArray("Table");//Fee Count
 

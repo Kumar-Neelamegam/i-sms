@@ -16,7 +16,7 @@ public class Splash_Activity extends RuntimePermissionsActivity implements Activ
 
 
     /**
-     * Created at 06/05/2017
+     * Created at 14/05/2017
      * Muthukumar N & Vidhya K
      */
 
